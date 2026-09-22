@@ -1,0 +1,45 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <button id="btn">Click me</button>
+    <p id="output">Hello</p>
+
+    <script>
+        document.getElementById("btn").addEventListener("click", () => {
+            document.getElementById("output").textContent = "Button was clicked 😊🙌!";
+        });
+    </script>
+
+    <input type="text" id="nameInput" placeholder="Enter your name">
+    <p id="greet"></p>
+
+    <script>
+        const input = document.getElementById("nameInput");
+        const greet = document.getElementById("greet");
+
+        input.addEventListener("input", () => {
+            greet.textContent = `Hello, ${input.value}!`;
+        });
+
+    </script>
+
+    <ul id="taskList">
+        <li>Sample Task 1</li>
+        <li>Sample Task 2</li>
+    </ul>
+
+    <script>
+        document.getElementById("taskList").addEventListener("click", (e) => {
+            if (e.target.tagName === "LI") {
+                e.target.remove();
+            }
+        });
+    </script>
+</body>
+</html>

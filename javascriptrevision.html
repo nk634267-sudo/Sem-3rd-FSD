@@ -1,0 +1,185 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>basic java script</title>
+</head>
+<body>
+    <h2>First JavaScript progam</h2>
+    <button onClick="runCode()">Run Code</button>
+    <p id="result"></p>
+
+    <script>
+        function runCode() {
+            //step 1 : store a number in a variable
+            let number1=10;
+            let number2=25;
+            //step 2 : add both number
+            let sum = number1+number2;
+            //step 3:show result on the page
+            document.getElementById("result").innerText="sum is :" +sum;
+        }
+    </script>
+
+    <h2>Types Example</h2>
+
+    <button onclick="runCode2()">Run Code</button>
+
+    <p id="result2"></p>
+    <script>
+        function runCode2() {
+            let age=20;
+            let name="Niraj";
+            let isStudent=true;
+
+            document.getElementById("result2").innerText="age Type :" + typeof age+" | " +
+            "name type :" + typeof name+ "|" + "isStudent type :" + typeof isStudent;
+        }
+    </script>
+
+    <h2>If-Else Example</h2>
+
+    <button onclick="runCode3()">Run Code</button>
+    <p id="result3"></p>
+    <script>
+        function runCode3(){
+            let marks=80;
+            if(marks >= 90){
+                document.getElementById("result3").innerText="Grade A";
+         
+    }
+    else if(marks >= 60){
+                document.getElementById("result3").innerText="Grade B";
+            }else
+            {
+                document.getElementById("result3").innerText="Grade C: -Need to improvement";
+            }
+            
+        }
+    </script>
+    <h2> Function Example</h2>
+    <button onclick="runCode4()">Run Code</button>
+    <p id="result4"></p>
+    <script>
+        function runCode4(){
+            // this function takes two numbers and return their sum
+            function addNumbers(x,y){
+                return  x+y;
+            }
+
+            //calling (using) the function
+            let sum = addNumbers(5, 7);
+            document.getElementById("result4").innerText="sum is :" +sum;
+        }
+    </script>
+    <h2>Arrays Example</h2>
+
+<button onclick="runCode5()">Run Code</button>
+
+<p id="result5"></p>
+
+<script> 
+function runCode5() {
+
+//array = list of items 
+let students = ["Aman", "Riya","Karan"];
+
+// get first item (index starts at 0) 
+let first = students[0];
+
+// how many items in array 
+let total = students.length;
+
+// add new item at the end 
+students.push("Sneha");
+
+// showing all results on the page
+document.getElementById("result5").innerText="First Student: " + first + " | " + "Total: " + total + " | " + "After Add:" + students;
+}
+</script>
+<h2>Objects Example</h2>
+<button onclick="runCode6()">Run Code</button>                                  
+<p id="result6"></p>
+
+<script>
+    function runCode6(){
+        let student = {
+            name : "Niraj" , 
+            age : 20 ,
+            marks : 90
+        };
+        let studentName = student.name;
+        let studentAge = student["age"];
+        student.marks = 95; // update marks
+        document.getElementById("result6").innerText="Student Name: " + studentName + " | " + "Student Age: " + studentAge + " | " + "Updated Marks: " + student.marks;}
+</script>
+<h2>DOM Manipulation Example</h2>
+<button onclick="runCode7()">Run Code</button>
+<p id="result7"></p>
+<script>
+    function runCode7(){
+         
+        // document.getElementById finds an element on the page by its id
+        // innerText changes the text shown
+        document.getElementById("result7").innerText = "Hello! javaScript changed this text.";
+
+        // style.color changes the text color
+        document.getElementById("result7").style.color = "green";
+    }
+</script>
+ <h2>event example</h2>
+    <button onclick="setupEvent()">Click Me</button>
+    <button id="ClickMeButton">Click Me !</button>
+
+    <script>
+        function setupEvent() {
+            document.getElementById("ClickMeButton").addEventListener("click" , function() {
+                alert("You clicked the button!");
+            });
+            
+        }
+    </script>
+
+    <h2>Template Literals Example</h2>
+
+    <button onclick="runCode8()">Run Code</button>
+
+    <p id="result8"></p>
+
+    <script>
+        function runCode8() {
+            let name = "Niraj";
+            let marks = 90;
+            let message = `Name: ${name}, Marks: ${marks}`;
+            document.getElementById("result8").innerText = message;
+        }
+    </script>
+
+     <h2>Classes Example</h2>   
+      <button onclick="runCode10()">Run Code</button>   
+       <p id="result10"></p>   
+        <script>    
+        function runCode10() { 
+             // class = blueprint to create similar objects easily    
+                 class Student {   
+            // constructor runs when a new object is created   
+                    constructor(name, marks) {         
+               this.name = name;          
+               this.marks = marks;         }     
+                  // a method (function) inside the class       
+               showResult() {         
+               return this.name + " scored " + this.marks;      
+                }   
+                  }       
+               creating a new object from the class      
+               let student1 = new Student("Karan", 78);       
+              // showing result on the page      
+               document.getElementById("result10").innerText = student1.showResult();   
+                } 
+                  </script> 
+
+
+
+</body>
+</html>

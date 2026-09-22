@@ -9,15 +9,18 @@ fs.writeFile("example.txt", "Hello World!", (err) => {
         if (err) throw err;
 
         console.log("File content:", data);
+        //UPDATE
 
         fs.writeFile("example.txt", "This is the updated content", (err) => {
             if (err) throw err;
 
             console.log("File overwritten(updated)!");
 
-            fs.unlink('example.txt' , (err) => {
-                if(err) throw err;
-                console.log('File deleted!');
+            //DELETE FILE
+            fs.unlink("example.txt", (err) => {
+                if (err) throw err;
+                console.log("File deleted!");
+
             });
         });
     });
