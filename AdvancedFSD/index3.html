@@ -1,0 +1,444 @@
+ ```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Node.js FSD Activity</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        section {
+            background-color: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #444;
+        }
+
+        button {
+            padding: 10px 15px;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        input {
+            padding: 10px;
+            width: 250px;
+            margin: 5px;
+        }
+
+        pre {
+            background-color: #eee;
+            padding: 15px;
+            min-height: 30px;
+        }
+
+        #log {
+            background-color: #222;
+            color: #0f0;
+            padding: 15px;
+            min-height: 100px;
+            max-height: 250px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Node.js FSD Activity</h1>
+
+    <!-- Section 1: Custom EventEmitter -->
+    <section>
+        <h2>1. Custom EventEmitter</h2>
+
+        <input
+            type="text"
+            id="nameInput"
+            placeholder="Enter your name"
+        >
+
+        <button onclick="callGreet()">
+            Trigger "greet"
+        </button>
+
+        <button onclick="callExit()">
+            Trigger "exit"
+        </button>
+
+        <pre id="emitterOutput"></pre>
+    </section>
+
+
+    <!-- Section 2: DOM-like Event Handling -->
+    <section>
+        <h2>2. DOM-like Event Handling</h2>
+
+        <button id="domBtn">
+            Click Me
+        </button>
+
+        <pre id="domOutput"></pre>
+    </section>
+
+
+    <!-- Section 3: Event Loop -->
+    <section>
+        <h2>3. Event Loop</h2>
+
+        <p>
+            setTimeout vs setImmediate vs process.nextTick
+        </p>
+
+        <button onclick="runEventLoop()">
+            Run Event Loop
+        </button>
+
+        <pre id="eventLoopOutput"></pre>
+    </section>
+
+
+    <!-- Section 4: File CRUD -->
+    <section>
+        <h2>4. File CRUD (fs module)</h2>
+
+        <input
+            type="text"
+            id="fileText"
+            placeholder="Enter text"
+        >
+
+        <br>
+
+        <button onclick="createFile()">
+            Create
+        </button>
+
+        <button onclick="readFile()">
+            Read
+        </button>
+
+        <button onclick="updateFile()">
+            Update
+        </button>
+
+        <button onclick="deleteFile()">
+            Delete
+        </button>
+
+        <pre id="fileOutput"></pre>
+    </section>
+
+
+    <!-- Section 5: Live Request Log -->
+    <section>
+        <h2>5. Live Request Log</h2>
+
+        <div id="log"></div>
+    </section>
+
+
+    <script>
+
+        // --------------------------------
+        // LOG FUNCTION
+        // --------------------------------
+
+        function log(msg) {
+            const logBox = document.getElementById("log");
+
+            const time = new Date().toLocaleTimeString();
+
+            logBox.innerHTML =
+                `[${time}] ${msg}<br>` + logBox.innerHTML;
+        }
+
+
+        // --------------------------------
+        // CUSTOM EVENT EMITTER
+        // --------------------------------
+
+        async function callGreet() {
+
+            const name =
+                document.getElementById("nameInput").value;
+
+            try {
+
+                const response =
+                    await fetch(`/greet?name=${encodeURIComponent(name)}`);
+
+                const data =
+                    await response.json();
+
+                document.getElementById("emitterOutput").textContent =
+                    data.message;
+
+                log("GET /greet");
+
+            } catch (error) {
+
+                document.getElementById("emitterOutput").textContent =
+                    "Error: Server is not running.";
+
+                log("Error calling /greet");
+            }
+        }
+
+
+        async function callExit() {
+
+            try {
+
+                const response =
+                    await fetch("/exit");
+
+                const data =
+                    await response.json();
+
+                document.getElementById("emitterOutput").textContent =
+                    data.message;
+
+                log("GET /exit");
+
+            } catch (error) {
+
+                document.getElementById("emitterOutput").textContent =
+                    "Error: Server is not running.";
+
+                log("Error calling /exit");
+            }
+        }
+
+
+        // --------------------------------
+        // DOM-LIKE EVENT HANDLING
+        // --------------------------------
+
+        const domBtn =
+            document.getElementById("domBtn");
+
+        const domOutput =
+            document.getElementById("domOutput");
+
+
+        domBtn.addEventListener("click", () => {
+
+            const event =
+                new CustomEvent("studentClicked", {
+                    detail: {
+                        time: Date.now()
+                    }
+                });
+
+            domBtn.dispatchEvent(event);
+
+        });
+
+
+        domBtn.addEventListener(
+            "studentClicked",
+            (event) => {
+
+                domOutput.textContent =
+                    "Custom event studentClicked triggered at: "
+                    + event.detail.time;
+
+                log("Custom event studentClicked triggered");
+
+            }
+        );
+
+
+        // --------------------------------
+        // EVENT LOOP
+        // --------------------------------
+
+        async function runEventLoop() {
+
+            try {
+
+                const response =
+                    await fetch("/eventloop");
+
+                const data =
+                    await response.json();
+
+                document.getElementById("eventLoopOutput").textContent =
+                    data.order.join("\n");
+
+                log("GET /eventloop");
+
+            } catch (error) {
+
+                document.getElementById("eventLoopOutput").textContent =
+                    "Error: Server is not running.";
+
+                log("Error calling /eventloop");
+            }
+        }
+
+
+        // --------------------------------
+        // FILE CREATE
+        // --------------------------------
+
+        async function createFile() {
+
+            const text =
+                document.getElementById("fileText").value;
+
+            try {
+
+                const response =
+                    await fetch("/create", {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+
+                        body: JSON.stringify({
+                            text: text
+                        })
+                    });
+
+                const data =
+                    await response.json();
+
+                document.getElementById("fileOutput").textContent =
+                    data.message;
+
+                log("POST /create");
+
+            } catch (error) {
+
+                document.getElementById("fileOutput").textContent =
+                    "Error: Server is not running.";
+
+                log("Error calling /create");
+            }
+        }
+
+
+        // --------------------------------
+        // FILE READ
+        // --------------------------------
+
+        async function readFile() {
+
+            try {
+
+                const response =
+                    await fetch("/read");
+
+                const data =
+                    await response.json();
+
+                document.getElementById("fileOutput").textContent =
+                    data.content;
+
+                log("GET /read");
+
+            } catch (error) {
+
+                document.getElementById("fileOutput").textContent =
+                    "Error: Server is not running.";
+
+                log("Error calling /read");
+            }
+        }
+
+
+        // --------------------------------
+        // FILE UPDATE
+        // --------------------------------
+
+        async function updateFile() {
+
+            const text =
+                document.getElementById("fileText").value;
+
+            try {
+
+                const response =
+                    await fetch("/update", {
+                        method: "PUT",
+
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+
+                        body: JSON.stringify({
+                            text: text
+                        })
+                    });
+
+                const data =
+                    await response.json();
+
+                document.getElementById("fileOutput").textContent =
+                    data.message;
+
+                log("PUT /update");
+
+            } catch (error) {
+
+                document.getElementById("fileOutput").textContent =
+                    "Error: Server is not running.";
+
+                log("Error calling /update");
+            }
+        }
+
+
+        // --------------------------------
+        // FILE DELETE
+        // --------------------------------
+
+        async function deleteFile() {
+
+            try {
+
+                const response =
+                    await fetch("/delete", {
+                        method: "DELETE"
+                    });
+
+                const data =
+                    await response.json();
+
+                document.getElementById("fileOutput").textContent =
+                    data.message;
+
+                log("DELETE /delete");
+
+            } catch (error) {
+
+                document.getElementById("fileOutput").textContent =
+                    "Error: Server is not running.";
+
+                log("Error calling /delete");
+            }
+        }
+
+    </script>
+
+</body>
+</html>
+```

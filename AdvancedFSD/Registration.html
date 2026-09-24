@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Registration Form</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+        }
+
+        .container {
+            width: 400px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: white;
+            border: 2px solid black;
+            border-radius: 10px;
+            box-shadow: 0 0 10px gray;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <center>
+            <h2><b><i>Student Registration Form</i></b></h2>
+
+            <form>
+
+                <label>Student Name:</label><br>
+                <input type="text" name="studentName"><br><br>
+
+                <label>Father's Name:</label><br>
+                <input type="text" name="fatherName"><br><br>
+
+                <label>Mother's Name:</label><br>
+                <input type="text" name="motherName"><br><br>
+
+                <label>Mobile Number:</label><br>
+                <input type="tel" name="mobile"><br><br>
+
+                <label>Date of Birth:</label><br>
+                <input type="date" name="dob"><br><br>
+
+                <label>Gender:</label><br>
+                <input type="radio" name="gender" value="Male"> Male
+                <input type="radio" name="gender" value="Female"> Female
+                
+                <br><br>
+
+                <label>Address:</label><br>
+                <input type="text" name="address"><br><br>
+
+                <label>Choose Your Engineering Course:</label><br>
+                <select name="course">
+                    <option>-- Select Your Destiny --</option>
+                    <option>B.Tech CSE (Ctrl+C Ctrl+V Engineer)</option>
+                    <option>B.Tech CSE AI (ChatGPT Certified)</option>
+                    <option>B.Tech CSE Data Science (Excel Warrior)</option>
+                </select>
+                <br><br>
+
+                <input type="submit" value="Submit">
+
+            </form>
+        </center>
+    </div>
+
+</body>
+</html>
