@@ -1,8 +1,10 @@
 const EventEmitter = require('events');
 
 class Element extends EventEmitter {
+
     constructor(name, parent = null) {
         super();
+
         this.name = name;
         this.parent = parent;
     }
@@ -16,6 +18,7 @@ class Element extends EventEmitter {
     }
 
     dispatchEvent(type, data) {
+
         const event = {
             type: type,
             target: this,
@@ -31,6 +34,7 @@ class Element extends EventEmitter {
         let current = this;
 
         while (current) {
+
             event.currentTarget = current;
 
             current.emit(type, event);
@@ -44,69 +48,90 @@ class Element extends EventEmitter {
     }
 }
 
+
+// Create hierarchy
 const documentElement = new Element('document');
 const form = new Element('form', documentElement);
 const button = new Element('button', form);
 
-function buttonClickHandler(event) {
+
+// Button listener
+function buttonHandler(event) {
     console.log(
-        `Button handler: target = ${event.target.name}, currentTarget = ${event.currentTarget.name}`
+        `Button: target=${event.target.name}, currentTarget=${event.currentTarget.name}`
     );
 }
 
-function formClickHandler(event) {
+
+// Form listener
+function formHandler(event) {
     console.log(
-        `Form handler: target = ${event.target.name}, currentTarget = ${event.currentTarget.name}`
+        `Form: target=${event.target.name}, currentTarget=${event.currentTarget.name}`
     );
 }
 
-function documentClickHandler(event) {
+
+// Document listener
+function documentHandler(event) {
     console.log(
-        `Document handler: target = ${event.target.name}, currentTarget = ${event.currentTarget.name}`
+        `Document: target=${event.target.name}, currentTarget=${event.currentTarget.name}`
     );
 }
 
-button.addEventListener('click', buttonClickHandler);
-form.addEventListener('click', formClickHandler);
-documentElement.addEventListener('click', documentClickHandler);
+
+// Add listeners
+button.addEventListener('click', buttonHandler);
+form.addEventListener('click', formHandler);
+documentElement.addEventListener('click', documentHandler);
 
 
+// Scenario A
 console.log('\n--- Scenario A ---');
-console.log('Clicking button:');
 
-button.dispatchEvent('click', 'Button clicked');
+button.dispatchEvent('click', {
+    message: 'Button clicked'
+});
 
 
+// Scenario B
 console.log('\n--- Scenario B ---');
-console.log('Form stops propagation:');
 
-function stopFormPropagation(event) {
+form.removeEventListener('click', formHandler);
+
+function formStopHandler(event) {
     console.log(
-        `Form handler: target = ${event.target.name}, currentTarget = ${event.currentTarget.name}`
+        `Form: target=${event.target.name}, currentTarget=${event.currentTarget.name}`
     );
 
     event.stopPropagation();
 }
 
-form.removeEventListener('click', formClickHandler);
-form.addEventListener('click', stopFormPropagation);
+form.addEventListener('click', formStopHandler);
 
-button.dispatchEvent('click', 'Button clicked');
+button.dispatchEvent('click', {
+    message: 'Second click'
+});
 
 
+// Scenario C
 console.log('\n--- Scenario C ---');
-console.log('Button listener removed:');
 
-button.removeEventListener('click', buttonClickHandler);
+button.removeEventListener('click', buttonHandler);
 
-button.dispatchEvent('click', 'Button clicked');
+button.dispatchEvent('click', {
+    message: 'Third click'
+});
 
-console.log('\n--- Keypress Event ---');
+
+// Keypress event
+console.log('\n--- Keypress ---');
 
 form.addEventListener('keypress', (event) => {
     console.log(
-        `Keypress handler: target = ${event.target.name}, currentTarget = ${event.currentTarget.name}, data = ${event.data}`
+        `Keypress: target=${event.target.name}, currentTarget=${event.currentTarget.name}, data=${event.data.key}`
     );
 });
 
-form.dispatchEvent('keypress', 'Enter key pressed');
+form.dispatchEvent('keypress', {
+    key: 'Enter'
+});
